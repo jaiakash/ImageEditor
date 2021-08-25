@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                             "Images");
                     //Set toolbar color
                     intent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR,
-                            Color.parseColor("#FF6200EE"));
+                            Color.parseColor("#e91e63"));
                     //Set Background Color
                     intent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR,
                             Color.parseColor("#FFFFFF"));
