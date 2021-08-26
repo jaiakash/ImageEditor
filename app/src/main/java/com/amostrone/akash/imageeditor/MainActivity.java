@@ -1,11 +1,15 @@
 package com.amostrone.akash.imageeditor;
 
+import static java.security.AccessController.getContext;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -26,6 +30,8 @@ import java.io.File;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int MY_CAMERA_REQUEST_CODE = 100;
     
     Button btPick;
     ImageView imageView;
@@ -48,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkPermission() {
         int permission = ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED)
+            ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
             pickImage();
