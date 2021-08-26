@@ -1,6 +1,5 @@
 package com.amostrone.akash.imageeditor;
 
-import static java.security.AccessController.getContext;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,10 +8,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -74,6 +74,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode==100 && grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+            pickImage();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Please grant permission", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void pickImage() {
         Intent galleryIntent = new Intent();
         galleryIntent.setType("image/*");
@@ -86,19 +97,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent chooser = Intent.createChooser(galleryIntent, "Choose the file");
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { cameraIntent });
-        startActivityForResult(chooser, 100);
+        startActivityForResult(chooser, 101);
 
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode==100 && grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
-            pickImage();
-        }
-        else{
-            Toast.makeText(getApplicationContext(), "Please grant permission", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
@@ -128,10 +128,16 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case 101:
                     imageView.setImageURI(uri);
-
-                    Toast.makeText(getApplicationContext(), "Photo Saved", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
+    }
+
+    public void toGrayScale(View view) {
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+        imageView.setColorFilter(filter);
     }
 }
