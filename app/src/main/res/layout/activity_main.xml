@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,31 +9,52 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
+
     <Button
+        android:id="@+id/bt_pick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/bt_pick"
         android:layout_centerHorizontal="true"
-        android:text="Select image"/>
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="4dp"
+        android:text="Select image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/reset_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="84dp"
+        android:text="Reset"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/bt_greyscale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="48dp"
         android:onClick="toGrayScale"
-        android:text="Greyscale" />
+        android:text="Greyscale"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/bt_addtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="63dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="52dp"
         android:onClick="toAddText"
-        android:layout_marginStart="250dp"
-        android:text="Add Text" />
+        android:text="Add Text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/bt_greyscale"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/image_view"
@@ -43,4 +65,14 @@
         android:layout_marginBottom="8dp"
         android:adjustViewBounds="true" />
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="8dp"
+        android:adjustViewBounds="true"
+        android:orientation="horizontal" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

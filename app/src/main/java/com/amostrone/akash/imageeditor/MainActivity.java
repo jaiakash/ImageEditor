@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -25,6 +26,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
@@ -43,10 +45,14 @@ public class MainActivity extends AppCompatActivity {
 
     boolean isimageselected=false;
 
+    LinearLayout linearLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        linearLayout = findViewById(R.id.linearLayout);
         
         btPick = findViewById(R.id.bt_pick);
         imageView = findViewById(R.id.image_view);
@@ -56,6 +62,21 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 isimageselected=true;
                 checkPermission();
+            }
+        });
+
+        Button btn1 = (Button)findViewById(R.id.reset_button);
+
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Restart the app
+                PackageManager packageManager = getApplicationContext().getPackageManager();
+                Intent intent = packageManager.getLaunchIntentForPackage(getApplicationContext().getPackageName());
+                ComponentName componentName = intent.getComponent();
+                Intent mainIntent = Intent.makeRestartActivityTask(componentName);
+                getApplicationContext().startActivity(mainIntent);
+                Runtime.getRuntime().exit(0);
             }
         });
     }
@@ -148,6 +169,12 @@ public class MainActivity extends AppCompatActivity {
 
             ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
             imageView.setColorFilter(filter);
+
+            Drawable drawable = imageView.getDrawable();
+            drawable.setBounds(20, 30, drawable.getIntrinsicWidth()+20, drawable.getIntrinsicHeight()+30);
+            editCanvas =new EditCanvas(this);
+            editCanvas.setBackgroundDrawable(drawable);
+            linearLayout.addView(editCanvas);
         }
         else{
             Toast.makeText(getApplicationContext(), "Select the image first", Toast.LENGTH_SHORT).show();
@@ -160,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         drawable.setBounds(20, 30, drawable.getIntrinsicWidth()+20, drawable.getIntrinsicHeight()+30);
         editCanvas =new EditCanvas(this);
         editCanvas.setBackgroundDrawable(drawable);
-        setContentView(editCanvas);
+        linearLayout.addView(editCanvas);
         }
         else{
             Toast.makeText(getApplicationContext(), "Select the image first", Toast.LENGTH_SHORT).show();
