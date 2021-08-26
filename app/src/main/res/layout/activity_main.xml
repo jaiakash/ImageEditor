@@ -26,12 +26,13 @@
         android:text="Greyscale" />
 
     <Button
-        android:id="@+id/bt_doodle"
+        android:id="@+id/bt_addtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:onClick="toAddText"
         android:layout_marginStart="250dp"
-        android:text="Doodle" />
+        android:text="Add Text" />
 
     <ImageView
         android:id="@+id/image_view"

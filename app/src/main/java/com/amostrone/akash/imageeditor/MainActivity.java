@@ -10,9 +10,13 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     
     Button btPick;
     ImageView imageView;
+    EditCanvas editCanvas;
+
+    boolean isimageselected=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         btPick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isimageselected=true;
                 checkPermission();
             }
         });
@@ -134,10 +142,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toGrayScale(View view) {
-        ColorMatrix matrix = new ColorMatrix();
-        matrix.setSaturation(0);
+        if(isimageselected){
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.setSaturation(0);
 
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-        imageView.setColorFilter(filter);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+            imageView.setColorFilter(filter);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Select the image first", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void toAddText(View view) {
+        if(isimageselected){
+        Drawable drawable = imageView.getDrawable();
+        drawable.setBounds(20, 30, drawable.getIntrinsicWidth()+20, drawable.getIntrinsicHeight()+30);
+        editCanvas =new EditCanvas(this);
+        editCanvas.setBackgroundDrawable(drawable);
+        setContentView(editCanvas);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Select the image first", Toast.LENGTH_SHORT).show();
+        }
     }
 }
