@@ -1,15 +1,11 @@
 package com.amostrone.akash.imageeditor;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
