@@ -45,9 +45,11 @@ public class MainActivity extends AppCompatActivity {
     
     Button btPick;
     ImageView imageView;
-    EditCanvas editCanvas;
+    static EditCanvas editCanvas;
 
     boolean isimageselected=false;
+    boolean isdrawnoncanvas=false;
+    static boolean isAddTextchosen=false;
 
     LinearLayout linearLayout;
 
@@ -119,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void pickImage() {
+        EditCanvas.text="";
+
         Intent galleryIntent = new Intent();
         galleryIntent.setType("image/*");
         galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
@@ -140,25 +144,6 @@ public class MainActivity extends AppCompatActivity {
         if(resultCode==RESULT_OK){
             Uri uri = data.getData();
             switch (requestCode){
-                case 100:
-                    Intent intent = new Intent(MainActivity.this, DsPhotoEditorActivity.class);
-                    intent.setData(uri);
-                    //Output Directory Name
-                    intent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY,
-                            "Images");
-                    //Set toolbar color
-                    intent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR,
-                            Color.parseColor("#e91e63"));
-                    //Set Background Color
-                    intent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR,
-                            Color.parseColor("#FFFFFF"));
-                    //Hide Tools
-                    intent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_TOOLS_TO_HIDE,
-                            new int[]{DsPhotoEditorActivity.TOOL_WARMTH,
-                            DsPhotoEditorActivity.TOOL_PIXELATE});
-
-                    startActivityForResult(intent,101);
-                    break;
                 case 101:
                     imageView.setImageURI(uri);
                     break;
@@ -170,15 +155,19 @@ public class MainActivity extends AppCompatActivity {
         if(isimageselected){
             ColorMatrix matrix = new ColorMatrix();
             matrix.setSaturation(0);
-
             ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
             imageView.setColorFilter(filter);
 
             Drawable drawable = imageView.getDrawable();
             drawable.setBounds(20, 30, drawable.getIntrinsicWidth()+20, drawable.getIntrinsicHeight()+30);
-            editCanvas =new EditCanvas(this);
-            editCanvas.setBackgroundDrawable(drawable);
-            linearLayout.addView(editCanvas);
+
+            if(!isdrawnoncanvas){
+                editCanvas =new EditCanvas(this);
+                editCanvas.setBackgroundDrawable(drawable);
+                linearLayout.addView(editCanvas);
+                imageView.setVisibility(View.GONE);
+                isdrawnoncanvas=true;
+            }
         }
         else{
             Toast.makeText(getApplicationContext(), "Select the image first", Toast.LENGTH_SHORT).show();
@@ -189,9 +178,14 @@ public class MainActivity extends AppCompatActivity {
         if(isimageselected){
         Drawable drawable = imageView.getDrawable();
         drawable.setBounds(20, 30, drawable.getIntrinsicWidth()+20, drawable.getIntrinsicHeight()+30);
-        editCanvas =new EditCanvas(this);
-        editCanvas.setBackgroundDrawable(drawable);
-        linearLayout.addView(editCanvas);
+        isAddTextchosen=true;
+        if(!isdrawnoncanvas){
+            editCanvas =new EditCanvas(this);
+            editCanvas.setBackgroundDrawable(drawable);
+            linearLayout.addView(editCanvas);
+            imageView.setVisibility(View.GONE);
+            isdrawnoncanvas=true;
+        }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Enter the text");
@@ -221,6 +215,21 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             Toast.makeText(getApplicationContext(), "Select the image first", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void toDoodle(View view) {
+        if(isimageselected) {
+            isAddTextchosen=false;
+            Drawable drawable = imageView.getDrawable();
+            drawable.setBounds(20, 30, drawable.getIntrinsicWidth() + 20, drawable.getIntrinsicHeight() + 30);
+            if (!isdrawnoncanvas) {
+                editCanvas = new EditCanvas(this);
+                editCanvas.setBackgroundDrawable(drawable);
+                linearLayout.addView(editCanvas);
+                imageView.setVisibility(View.GONE);
+                isdrawnoncanvas = true;
+            }
         }
     }
 }

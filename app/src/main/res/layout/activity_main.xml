@@ -35,25 +35,34 @@
         android:id="@+id/bt_greyscale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="50dp"
         android:onClick="toGrayScale"
         android:text="Greyscale"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/bt_doodle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="50dp"
+        android:onClick="toDoodle"
+        android:text="Doodle"
+        app:layout_constraintStart_toEndOf="@+id/bt_greyscale"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/bt_addtext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="63dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="52dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
         android:onClick="toAddText"
         android:text="Add Text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/bt_greyscale"
+        app:layout_constraintStart_toEndOf="@+id/bt_doodle"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -70,7 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="150dp"
         android:layout_marginBottom="8dp"
         android:adjustViewBounds="true"
         android:orientation="horizontal" />
