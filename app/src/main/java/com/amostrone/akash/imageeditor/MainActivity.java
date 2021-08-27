@@ -231,5 +231,11 @@ public class MainActivity extends AppCompatActivity {
                 isdrawnoncanvas = true;
             }
         }
+        else{
+            Toast.makeText(getApplicationContext(), "Select the image first", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void toSave(View view) {
     }
 }
