@@ -159,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
             imageView.setColorFilter(filter);
 
             Drawable drawable = imageView.getDrawable();
-            drawable.setBounds(20, 30, drawable.getIntrinsicWidth()+20, drawable.getIntrinsicHeight()+30);
 
             if(!isdrawnoncanvas){
                 editCanvas =new EditCanvas(this);
@@ -177,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
     public void toAddText(View view) {
         if(isimageselected){
         Drawable drawable = imageView.getDrawable();
-        drawable.setBounds(20, 30, drawable.getIntrinsicWidth()+20, drawable.getIntrinsicHeight()+30);
         isAddTextchosen=true;
         if(!isdrawnoncanvas){
             editCanvas =new EditCanvas(this);
@@ -189,14 +187,9 @@ public class MainActivity extends AppCompatActivity {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Enter the text");
-
-            // Set up the input
             final EditText input = new EditText(this);
-            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
             input.setInputType(InputType.TYPE_CLASS_TEXT);
             builder.setView(input);
-
-            // Set up the buttons
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -222,7 +215,6 @@ public class MainActivity extends AppCompatActivity {
         if(isimageselected) {
             isAddTextchosen=false;
             Drawable drawable = imageView.getDrawable();
-            drawable.setBounds(20, 30, drawable.getIntrinsicWidth() + 20, drawable.getIntrinsicHeight() + 30);
             if (!isdrawnoncanvas) {
                 editCanvas = new EditCanvas(this);
                 editCanvas.setBackgroundDrawable(drawable);
