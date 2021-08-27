@@ -11,29 +11,33 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -257,24 +261,71 @@ public class MainActivity extends AppCompatActivity {
 
     public void toSave(View view) {
         if(isimageselected) {
-            Bitmap bmp = viewToBitmap(linearLayout);
-            File file = new File(Environment.getExternalStorageDirectory() + "/sign.jpg");
-
-            try {
-                bmp.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(file));
-            } catch (Exception e) {
-                e.printStackTrace();
+            File file = saveBitMap(this, linearLayout);    //which view you want to pass that view as parameter
+            if (file != null) {
+                Log.i("TAG", "Drawing saved to the gallery!");
+            } else {
+                Log.i("TAG", "Oops! Image could not be saved.");
             }
-            Toast.makeText(getApplicationContext(), "App development is in progress", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Image saved in pictures", Toast.LENGTH_SHORT).show();
         }
         else{
             Toast.makeText(getApplicationContext(), "Select the image first", Toast.LENGTH_SHORT).show();
         }
     }
-    public Bitmap viewToBitmap(View view) {
-        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
+    private File saveBitMap(Context context, View drawView){
+        File pictureFileDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"AkashEditor");
+        if (!pictureFileDir.exists()) {
+            boolean isDirectoryCreated = pictureFileDir.mkdirs();
+            if(!isDirectoryCreated)
+                Log.i("ATG", "Can't create directory to save the image");
+            return null;
+        }
+        String filename = pictureFileDir.getPath() +File.separator+ System.currentTimeMillis()+".jpg";
+        File pictureFile = new File(filename);
+        Bitmap bitmap =getBitmapFromView(drawView);
+        try {
+            pictureFile.createNewFile();
+            FileOutputStream oStream = new FileOutputStream(pictureFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, oStream);
+            oStream.flush();
+            oStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.i("TAG", "There was an issue saving the image.");
+        }
+        scanGallery( context,pictureFile.getAbsolutePath());
+        return pictureFile;
+    }
+    //create bitmap from view and returns it
+    private Bitmap getBitmapFromView(View view) {
+        //Define a bitmap with the same size as the view
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        //Bind a canvas to it
+        Canvas canvas = new Canvas(returnedBitmap);
+        //Get the view's background
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null) {
+            //has background drawable, then draw it on the canvas
+            bgDrawable.draw(canvas);
+        }   else{
+            //does not have background drawable, then draw white background on the canvas
+            canvas.drawColor(Color.WHITE);
+        }
+        // draw the view on the canvas
         view.draw(canvas);
-        return bitmap;
+        //return the bitmap
+        return returnedBitmap;
+    }
+    // used for scanning gallery
+    private void scanGallery(Context cntx, String path) {
+        try {
+            MediaScannerConnection.scanFile(cntx, new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
+                public void onScanCompleted(String path, Uri uri) {
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
