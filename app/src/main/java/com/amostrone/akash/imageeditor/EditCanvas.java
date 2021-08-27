@@ -12,10 +12,12 @@ import androidx.annotation.NonNull;
 public class EditCanvas extends View {
     Paint paint;
     private final Paint mPaint;
-    private float startX;
-    private float startY;
-    private float endX;
-    private float endY;
+    private float doo_startX;
+    private float doo_startY;
+    private float doo_endX;
+    private float doo_endY;
+    float text_currX;
+    float text_currY;
     public static String text="";
 
     public EditCanvas(Context context) {
@@ -34,28 +36,40 @@ public class EditCanvas extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawText(text, startX,startY,paint);
-        if(!MainActivity.isAddTextchosen)canvas.drawLine(startX, startY, endX, endY, mPaint);
+        canvas.drawText(text, text_currX,text_currY,paint);
+        canvas.drawLine(doo_startX, doo_startY, doo_endX, doo_endY, mPaint);
     }
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                startX = event.getX();
-                startY = event.getY();
-                endX = event.getX();
-                endY = event.getY();
+                if(!MainActivity.isAddTextchosen) {
+                    doo_startX = event.getX();
+                    doo_startY = event.getY();
+                }
+                if(MainActivity.isAddTextchosen){
+                    text_currX=event.getX();
+                    text_currY=event.getY();
+                }
                 invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
-                endX = event.getX();
-                endY = event.getY();
+                if(!MainActivity.isAddTextchosen) {
+                    doo_endX = event.getX();
+                    doo_endY = event.getY();
+                }
+                if(MainActivity.isAddTextchosen){
+                    text_currX=event.getX();
+                    text_currY=event.getY();
+                }
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                endX = event.getX();
-                endY = event.getY();
+                if(!MainActivity.isAddTextchosen) {
+                    doo_endX = event.getX();
+                    doo_endY = event.getY();
+                }
                 invalidate();
                 break;
 
