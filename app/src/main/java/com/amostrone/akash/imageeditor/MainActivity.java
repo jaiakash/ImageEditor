@@ -237,5 +237,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toSave(View view) {
+        if(isimageselected) {
+            Toast.makeText(getApplicationContext(), "App development is in progress", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Select the image first", Toast.LENGTH_SHORT).show();
+        }
     }
 }
