@@ -4,6 +4,7 @@ package com.amostrone.akash.imageeditor;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -28,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -176,7 +178,11 @@ public class MainActivity extends AppCompatActivity {
             if(!isdrawnoncanvas){
                 editCanvas =new EditCanvas(this);
                 editCanvas.setBackgroundDrawable(drawable);
+
+                ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(imageView.getWidth(), imageView.getHeight());
+                params.setMargins(0, 0, 0, 0);
                 linearLayout.addView(editCanvas);
+
                 imageView.setVisibility(View.GONE);
                 isdrawnoncanvas=true;
             }
@@ -193,7 +199,11 @@ public class MainActivity extends AppCompatActivity {
         if(!isdrawnoncanvas){
             editCanvas =new EditCanvas(this);
             editCanvas.setBackgroundDrawable(drawable);
+
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(imageView.getWidth(), imageView.getHeight());
+            params.setMargins(0, 0, 0, 0);
             linearLayout.addView(editCanvas);
+
             imageView.setVisibility(View.GONE);
             isdrawnoncanvas=true;
         }
@@ -231,7 +241,11 @@ public class MainActivity extends AppCompatActivity {
             if (!isdrawnoncanvas) {
                 editCanvas = new EditCanvas(this);
                 editCanvas.setBackgroundDrawable(drawable);
+
+                ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(imageView.getWidth(), imageView.getHeight());
+                params.setMargins(0, 0, 0, 0);
                 linearLayout.addView(editCanvas);
+
                 imageView.setVisibility(View.GONE);
                 isdrawnoncanvas = true;
             }
