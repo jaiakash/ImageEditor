@@ -8,7 +8,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -23,8 +25,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -188,6 +192,32 @@ public class MainActivity extends AppCompatActivity {
         editCanvas =new EditCanvas(this);
         editCanvas.setBackgroundDrawable(drawable);
         linearLayout.addView(editCanvas);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Enter the text");
+
+            // Set up the input
+            final EditText input = new EditText(this);
+            // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            builder.setView(input);
+
+            // Set up the buttons
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    EditCanvas.text= input.getText().toString();
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+
         }
         else{
             Toast.makeText(getApplicationContext(), "Select the image first", Toast.LENGTH_SHORT).show();
