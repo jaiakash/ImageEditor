@@ -14,12 +14,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +29,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -238,10 +243,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void toSave(View view) {
         if(isimageselected) {
+            Bitmap bmp = viewToBitmap(linearLayout);
+            File file = new File(Environment.getExternalStorageDirectory() + "/sign.jpg");
+
+            try {
+                bmp.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(file));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             Toast.makeText(getApplicationContext(), "App development is in progress", Toast.LENGTH_SHORT).show();
         }
         else{
             Toast.makeText(getApplicationContext(), "Select the image first", Toast.LENGTH_SHORT).show();
         }
+    }
+    public Bitmap viewToBitmap(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
     }
 }
